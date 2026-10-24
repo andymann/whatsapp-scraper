@@ -218,3 +218,32 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+# ---------------------------------------------------------------------------
+# Project-specific: never commit personal WhatsApp data or local state
+# ---------------------------------------------------------------------------
+
+# Persistent Chromium profile holding the WhatsApp Web login session
+.wweb_profile/
+
+# Exported messages (--export / GUI "Save") — keep config.json tracked
+*.csv
+*.json
+!config.json
+
+# Copies of the WhatsApp database
+*.sqlite
+*.sqlite-wal
+*.sqlite-shm
+*.sqlite3
+
+# Saved GUI logs
+*.log
+*.txt
+!requirements.txt
+
+# Editors / OS clutter
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db

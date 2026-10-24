@@ -1,5 +1,7 @@
 # whatsapp_messages.py
 
+> **Setup:** see [VENV_SETUP.md](VENV_SETUP.md) for running everything in a Python virtual environment.
+
 Lists WhatsApp (macOS desktop app) messages from every chat, within a
 configurable timeframe, in one place — as a `sender | message` table — and
 exports the full structured records for further processing.
