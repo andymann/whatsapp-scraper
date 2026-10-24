@@ -3,6 +3,8 @@
 Lists WhatsApp messages from every chat within a timeframe as a
 `sender | message` table, and exports the full records as CSV/JSON.
 
+![The GUI (whatsapp_web_gui.py) on macOS, showing sample messages](docs/screenshot-gui.png)
+
 | Script                    | What it reads                         | Runs on               | Needs                         |
 |---------------------------|---------------------------------------|-----------------------|-------------------------------|
 | `whatsapp_messages.py`    | The WhatsApp **desktop app** database | macOS only            | Python only                   |
