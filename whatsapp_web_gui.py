@@ -30,6 +30,7 @@ Requires:
 
 from __future__ import annotations
 
+import os
 import queue
 import subprocess
 import sys
@@ -41,7 +42,23 @@ from typing import Optional
 
 from wa_common import resolve_timeframe
 
-DEFAULT_PROFILE_DIR = Path(__file__).with_name(".wweb_profile")
+FROZEN = getattr(sys, "frozen", False)  # running from the PyInstaller .app
+
+if FROZEN:
+    # build_macos_app.sh copies Chromium into Contents/Resources/ms-playwright
+    # (sys.executable is Contents/MacOS/<name>); point Playwright there instead
+    # of ~/Library/Caches/ms-playwright.
+    os.environ.setdefault(
+        "PLAYWRIGHT_BROWSERS_PATH",
+        str(Path(sys.executable).resolve().parent.parent / "Resources" / "ms-playwright"),
+    )
+    # The app bundle is read-only (and signed), so keep the login session
+    # in the user's Application Support folder instead.
+    DEFAULT_PROFILE_DIR = (
+        Path.home() / "Library" / "Application Support" / "WhatsApp Scraper" / ".wweb_profile"
+    )
+else:
+    DEFAULT_PROFILE_DIR = Path(__file__).with_name(".wweb_profile")
 DEFAULT_CDP_ENDPOINT = "http://localhost:9222"
 DEFAULT_CDP_PORT = 9222
 

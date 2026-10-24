@@ -144,3 +144,28 @@ Before pushing, run `git status` and check that none of these appear.
 | `ModuleNotFoundError: No module named '_tkinter'` | Install Tkinter (step 1), then recreate the venv (`rm -rf .venv`, steps 3–4). |
 | QR code never appears / login times out | Run without `--headless`, or raise `--login-timeout`. |
 | `Could not read WhatsApp's internal data` | WhatsApp Web changed internally; see the README section on rediscovering module names. |
+
+## Building the macOS app (optional)
+
+Turns the GUI into a double-clickable `WhatsApp Scraper.app` with Chromium
+bundled inside, so it runs without Python or a venv.
+
+With the venv active, from the repo root:
+
+```bash
+./build_macos_app.sh
+```
+
+This installs PyInstaller (`requirements-build.txt`), builds the app, copies
+Chromium into it and signs it ad hoc. The result is
+`dist/WhatsApp Scraper.app` (about 530 MB). Drag it into `/Applications`.
+
+- The app keeps its WhatsApp Web login in
+  `~/Library/Application Support/WhatsApp Scraper/.wweb_profile/`, not in the
+  repo, so you scan the QR code once more the first time you use the app.
+- The app is only signed ad hoc, not notarized. On *your* Mac it opens
+  normally. If you copy it to another Mac, the first time right-click it →
+  **Open** (or run `xattr -dr com.apple.quarantine "WhatsApp Scraper.app"`).
+- It's built for the processor of the Mac you build on (Apple Silicon or
+  Intel).
+- `build/`, `dist/` and `*.spec` are in `.gitignore`.

@@ -241,6 +241,7 @@ __marimo__/
 *.log
 *.txt
 !requirements.txt
+!requirements-build.txt
 
 # Editors / OS clutter
 .vscode/
