@@ -1,0 +1,3 @@
+# whatsapp_messages.py needs nothing beyond the standard library.
+# whatsapp_web_scraper.py needs Playwright + a Chromium install:
+playwright>=1.47

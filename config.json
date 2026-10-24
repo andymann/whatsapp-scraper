@@ -1,0 +1,7 @@
+{
+  "db_path": null,
+  "default_timeframe_hours": 24,
+  "chat_filter": null,
+  "default_export_path": null,
+  "default_export_format": "csv"
+}
