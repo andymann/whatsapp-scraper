@@ -17,16 +17,25 @@ this repo, so Playwright and its browser don't touch your system Python.
   python3 --version
   ```
 
-- **Tkinter** (only for the GUI). It ships with the python.org installers.
-  With Homebrew Python on macOS install it separately:
+  > **macOS:** don't use Apple's built-in `/usr/bin/python3` (Python 3.9
+  > from the Command Line Tools). It ships the deprecated Tk 8.5, and the
+  > GUI opens as an **empty dark window**. Install a current Python instead:
+  >
+  > ```bash
+  > brew install python@3.13 python-tk@3.13
+  > ```
+  >
+  > and use `python3.13` in step 3 below. The python.org installer works too.
 
-  ```bash
-  brew install python-tk
-  ```
-
+- **Tkinter** (only for the GUI). It ships with the python.org installers;
+  with Homebrew install `python-tk@<version>` as shown above.
   On Debian/Ubuntu: `sudo apt install python3-tk python3-venv`.
 
-Verify Tkinter works: `python3 -m tkinter` should open a small test window.
+Verify Tkinter works and is Tk 8.6 or newer:
+
+```bash
+python3.13 -c "import tkinter; print(tkinter.TkVersion)"
+```
 
 ## 2. Clone the repo
 
@@ -38,8 +47,10 @@ cd whatsapp-scraper
 ## 3. Create and activate the venv
 
 ```bash
-python3 -m venv .venv
+python3.13 -m venv .venv
 ```
+
+(On Linux/Windows, `python3` / `py -3` is fine if it is 3.10+.)
 
 Activate it (do this in every new terminal before running the scripts):
 
@@ -129,6 +140,7 @@ Before pushing, run `git status` and check that none of these appear.
 |---|---|
 | `ModuleNotFoundError: No module named 'playwright'` | The venv isn't active — run `source .venv/bin/activate`. |
 | `Executable doesn't exist ... chromium` | Run `python -m playwright install chromium` inside the venv. |
+| GUI window is empty/dark; terminal shows `DEPRECATION WARNING: The system version of Tk is deprecated` | The venv uses Apple's Python 3.9 with Tk 8.5. Install Homebrew Python (step 1), then `rm -rf .venv` and redo steps 3–4 with `python3.13`. |
 | `ModuleNotFoundError: No module named '_tkinter'` | Install Tkinter (step 1), then recreate the venv (`rm -rf .venv`, steps 3–4). |
 | QR code never appears / login times out | Run without `--headless`, or raise `--login-timeout`. |
 | `Could not read WhatsApp's internal data` | WhatsApp Web changed internally; see the README section on rediscovering module names. |
