@@ -45,18 +45,24 @@ from wa_common import resolve_timeframe
 FROZEN = getattr(sys, "frozen", False)  # running from the PyInstaller .app
 
 if FROZEN:
-    # build_macos_app.sh copies Chromium into Contents/Resources/ms-playwright
-    # (sys.executable is Contents/MacOS/<name>); point Playwright there instead
-    # of ~/Library/Caches/ms-playwright.
-    os.environ.setdefault(
-        "PLAYWRIGHT_BROWSERS_PATH",
-        str(Path(sys.executable).resolve().parent.parent / "Resources" / "ms-playwright"),
-    )
-    # The app bundle is read-only (and signed), so keep the login session
-    # in the user's Application Support folder instead.
-    DEFAULT_PROFILE_DIR = (
-        Path.home() / "Library" / "Application Support" / "WhatsApp Scraper" / ".wweb_profile"
-    )
+    # The build copies Chromium next to the executable: into
+    # Contents/Resources/ms-playwright on macOS (sys.executable is
+    # Contents/MacOS/<name>), into <dist folder>/ms-playwright elsewhere.
+    # Point Playwright there instead of its per-user download cache.
+    exe_dir = Path(sys.executable).resolve().parent
+    if sys.platform == "darwin":
+        browsers_dir = exe_dir.parent / "Resources" / "ms-playwright"
+        data_dir = Path.home() / "Library" / "Application Support" / "WhatsApp Scraper"
+    elif sys.platform.startswith("win"):
+        browsers_dir = exe_dir / "ms-playwright"
+        data_dir = Path(os.environ.get("APPDATA", Path.home())) / "WhatsApp Scraper"
+    else:
+        browsers_dir = exe_dir / "ms-playwright"
+        data_dir = Path(os.environ.get("XDG_DATA_HOME", Path.home() / ".local" / "share")) / "whatsapp-scraper"
+    os.environ.setdefault("PLAYWRIGHT_BROWSERS_PATH", str(browsers_dir))
+    # The app folder may be read-only (and is signed on macOS), so keep the
+    # login session in the user's data folder instead.
+    DEFAULT_PROFILE_DIR = data_dir / ".wweb_profile"
 else:
     DEFAULT_PROFILE_DIR = Path(__file__).with_name(".wweb_profile")
 DEFAULT_CDP_ENDPOINT = "http://localhost:9222"

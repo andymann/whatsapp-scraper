@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # Build "WhatsApp Scraper.app" (the Tkinter GUI) with Chromium bundled inside.
 #
-# Run from the repo root with the venv active (see VENV_SETUP.md):
+# Run from the repo root with the venv active (see "Setup" in README.md):
 #     ./build_macos_app.sh
 # Output: dist/WhatsApp Scraper.app
 set -euo pipefail
